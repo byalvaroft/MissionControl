@@ -1,0 +1,508 @@
+html {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -ms-overflow-style: scrollbar;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 2rem;
+}
+
+button {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0%;
+}
+
+.modal-dialog {
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.modal-body {
+  position: relative;
+  padding: 0px;
+}
+
+.row {
+  margin: 0% !important;
+}
+
+@media (min-width: 1300px) {
+  #PrincipalAdaptativo {
+    color: white;
+    padding-right: 15%;
+    padding-left: 15%;
+  }
+}
+
+@media (max-width: 1400px) {
+  #PrincipalAdaptativo {
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+#logoWeb {
+  display: block;
+  margin: 0 auto;
+  bottom: 50px;
+}
+
+.areaParallax {
+  min-width: 100px;
+  bottom: 300px;
+  height: 710px;
+  transform-style: preserve-3d;
+}
+
+.logosTripleMenu {
+  max-height: 85%;
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.columna2 {
+  max-width: 100%;
+  display: block;
+  margin: 0px;
+  padding-top: 15%;
+  padding-bottom: 15%;
+  background-size: 110% 110%;
+  background-clip: border-box;
+}
+
+.section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: white;
+}
+
+#videoFondo {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  content: " ";
+  object-fit: cover;
+  width: 100%;
+  position: absolute;
+  transform: translateZ(-7px) scale(8.2);
+  background-size: 100%;
+  z-index: -6;
+}
+
+.capa2 {
+  content: " ";
+  position: absolute;
+  top: 75%;
+  left: -50px;
+  transform: translateZ(-3px) scale(4);
+  background-size: 100%;
+  z-index: -5;
+  background-image: url("src/capas/capa2.gif");
+  background-repeat: no-repeat;
+}
+
+.capa3 {
+  content: " ";
+  position: absolute;
+  top: -250px;
+  right: 20px;
+  bottom: 0;
+  left: -100;
+  transform: translateZ(-2px) scale(3.5);
+  background-size: 100%;
+  z-index: -4;
+  background-image: url("src/capas/capa3.gif");
+  background-repeat: no-repeat;
+}
+
+.capa4 {
+  content: " ";
+  position: absolute;
+  top: 360px;
+  right: 0;
+  bottom: 0;
+  left: -12px;
+  transform: translateZ(-1px) scale(2.1);
+  background-size: 100%;
+  z-index: -3;
+  background-image: url("src/capas/capa4.gif");
+  background-repeat: no-repeat;
+}
+
+.capa5 {
+  content: " ";
+  position: absolute;
+  top: 170%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateZ(0.2px) scale(1.4);
+  background-size: 100%;
+  z-index: -4;
+  background-image: url("src/capas/capa5.png");
+  background-repeat: no-repeat;
+}
+
+.capa6 {
+  content: " ";
+  position: absolute;
+  top: 230%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateZ(-5px) scale(7);
+  background-size: 100%;
+  z-index: -5;
+  background-image: url("src/capas/capa6.gif");
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
+.capa7 {
+  content: " ";
+  position: absolute;
+  top: -30%;
+  height: 300%;
+  right: 0;
+  bottom: 0;
+  left: -40%;
+  transform: translateZ(0px) scale(0.5);
+  background-size: 100%;
+  z-index: -6;
+  background-image: url("src/capas/capa7.png");
+  background-repeat: no-repeat;
+}
+
+.content {
+  height: 200vh;
+  display: flex;
+  justify-content: center;
+  background: red;
+}
+
+@media (max-width: 2000px) {
+  .areaParallax {
+    min-width: 100px;
+    bottom: 300px;
+    height: 610px;
+  }
+
+  @media (max-width: 1900px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 600px;
+    }
+  }
+
+  @media (max-width: 1800px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 580px;
+    }
+  }
+
+  @media (max-width: 1700px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 500px;
+    }
+  }
+
+  @media (max-width: 1600px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 480px;
+    }
+  }
+
+  @media (max-width: 1500px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 500px;
+    }
+  }
+
+  @media (max-width: 1400px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 660px;
+    }
+  }
+
+  @media (max-width: 1300px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 600px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 560px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 500px;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 460px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 420px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 400px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 380px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 330px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 350px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 340px;
+    }
+  }
+
+  @media (max-width: 300px) {
+    .areaParallax {
+      min-width: 100px;
+      bottom: 300px;
+      height: 350px;
+    }
+  }
+
+  #todoSalvoParalax {
+    -webkit-box-shadow: 0 0 30px black;
+    margin: 2%;
+    padding: 0;
+    width: 96%;
+  }
+
+  #container {
+    background-image: url("src/capas/capa1.png");
+    background-size: 100%;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 1px;
+    -moz-box-shadow: 0 0 30px #ccc;
+    -webkit-box-shadow: 0 0 30px #ccc;
+    box-shadow: 0 0 30px #ccc;
+  }
+
+  #container::-webkit-scrollbar {
+    display: none;
+  }
+
+  #logo {
+    width: 50px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  div {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+  }
+
+  #columna1 {
+    background: url("src/fondos/fondo1.png");
+    height: 150px;
+    background-size: 20%;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: 35% 50%;
+    transition: background-position 0.5s, background-size 0.5s, box-shadow 0.5s;
+  }
+
+  #columna2 {
+    background: url("src/fondos/fondo2.png");
+    height: 150px;
+    background-size: 20%;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: 50% 50%;
+    transition: background-position 0.5s, background-size 0.5s, box-shadow 0.5s;
+  }
+
+  #columna3 {
+    background: url("src/fondos/fondo3.png");
+    height: 150px;
+    background-size: 20%;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: 65% 50%;
+    transition: background-position 0.5s, background-size 0.5s, box-shadow 0.5s;
+  }
+
+  #columna1:hover {
+    box-shadow: inset 0 0 0 1000px rgb(0, 134, 116);
+    background-size: 170%;
+    background-position: 0% 50%;
+  }
+
+  #columna2:hover {
+    box-shadow: inset 0 0 0 1000px rgb(100, 0, 104);
+    background-size: 170%;
+  }
+
+  #columna3:hover {
+    box-shadow: inset 0 0 0 1000px rgb(0, 27, 117);
+    background-size: 170%;
+    background-position: -10% 50%;
+  }
+
+  #columna4,
+  #columna5,
+  #columna6,
+  #columna7 {
+    height: 100%;
+  }
+
+  #zonatexto {
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    background-color: rgb(0, 0, 0);
+    opacity: 0.5;
+  }
+
+  #zonaimagen {
+    background: white;
+    height: auto;
+    padding: 0;
+  }
+
+  h1 {
+    visibility: hidden;
+  }
+
+  #footer {
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      180deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(130, 130, 130, 1) 62%,
+      rgba(2, 0, 36, 1) 87%,
+      rgba(2, 0, 36, 1) 100%
+    );
+    height: 100%;
+    padding-top: 15px;
+  }
+
+  #carousel {
+    width: 100% !important;
+    max-height: 20% !important;
+  }
+
+  .slider {
+    width: 100%;
+    height: 100%;
+    background-color: #eeeeee;
+    margin-bottom: 123px !important;
+    margin: auto;
+    background-image: url("src/imagenes_slider/slider.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation-name: slide;
+    animation-duration: 30s;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes slide {
+    0% {
+      background-position: 6% 0;
+    }
+    4% {
+      background-position: 6% 0;
+    }
+    66.64% {
+      background-position: 92% 0;
+    }
+    70.30% {
+      background-position: 92% 0;
+    }
+    100% {
+      background-position: 6% 0;
+    }
+  }
+}
