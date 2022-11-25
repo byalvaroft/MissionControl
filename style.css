@@ -60,6 +60,26 @@ button {
   bottom: 50px;
 }
 
+.login_button {
+  color:white;
+  font-size: larger;
+  z-index: 10;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  border: 0.2em solid white;
+  width: 10%;
+  text-align: center;
+  border-radius: 10%;
+}
+
+.login_button:hover {
+  text-decoration: none;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.22);
+  color: white;
+}
+
 .areaParallax {
   min-width: 100px;
   bottom: 300px;
