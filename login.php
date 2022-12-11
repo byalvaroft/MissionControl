@@ -70,8 +70,9 @@
 
 
 <?php
+include_once "inc.php";
+include_once "connection.php";
 
-include "connection.php";
 
 if(isset($_POST['login'])){
 
@@ -83,11 +84,15 @@ if(isset($_POST['login'])){
 
         $sql = "select * from users where username='".$usuario_introducido."' and password='".$pass_introducida."'";
 
+     //   _cFuncionesPHP::pred($sql, "hola");
 
         $result = mysqli_query($con,$sql);
+        $datos = $result->fetch_object();
 
         if($result->num_rows){
+
             $_SESSION['user'] = $usuario_introducido;
+            $_SESSION['authtipo'] = $datos->authtipo;
             header('Location: home.php');
         }else{
             echo "Invalid username and password";
