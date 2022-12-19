@@ -2,21 +2,26 @@
 
 <style>
 
+    body {
+        background-image: url("src/fondologin.jpg");
+        background-size: cover;
+    }
+
     #login_div{
-        border: 1px solid gray;
-        border-radius: 3px;
+        border: 8px solid rgba(10,10,10,0.3);
+        border-radius: 10px;
         width: fit-content;
         height: fit-content;
         padding: 5%;
         margin: 0 auto;
         text-align: center;
+        backdrop-filter: blur(7px)brightness(110%);
     }
 
     #login_div h1{
         margin-top: 0;
         font-weight: normal;
         padding: 10px;
-        background-color: #808083;
         color: white;
         font-family: sans-serif;
     }
@@ -29,12 +34,18 @@
 
     input[type=text], input[type=password]{
         padding: 7px;
+        background-color: transparent;
+        border: 2px solid rgba(255, 255, 255,0.6);
+        border-radius: 7px;
+        color: white;
     }
 
     #login_div input[type=submit]{
         padding: 7px;
         width: 100px;
         background-color: black;
+        border-radius: 5px;
+        font-size: larger;
         border: 1px;
         color: white;
     }
@@ -48,12 +59,12 @@
 <div class="container">
     <form method="post" action="">
         <div id="login_div">
-            <h1>Entrar</h1>
+            <h1>Login</h1>
             <div>
-                <input type="text"  id="user" name="user" placeholder="Usuario" />
+                <input type="text"  id="user" name="user" placeholder="User" />
             </div>
             <div>
-                <input type="password" id="pass" name="pass" placeholder="Contraseña"/>
+                <input type="password" id="pass" name="pass" placeholder="Password"/>
             </div>
             <div>
                 <input type="submit" value="Submit" name="login" />
@@ -81,18 +92,13 @@ if(isset($_POST['login'])){
 
     if ($usuario_introducido != "" && $pass_introducida != ""){
 
+        $user = _cUsers::login($usuario_introducido,$pass_introducida);
 
-        $sql = "select * from users where username='".$usuario_introducido."' and password='".$pass_introducida."'";
-
-     //   _cFuncionesPHP::pred($sql, "hola");
-
-        $result = mysqli_query($con,$sql);
-        $datos = $result->fetch_object();
-
-        if($result->num_rows){
+        if($user){
 
             $_SESSION['user'] = $usuario_introducido;
-            $_SESSION['authtipo'] = $datos->authtipo;
+            $_SESSION['authtipo'] = $user['authtipo'];
+            $_SESSION['id'] = $user['id'];
             header('Location: home.php');
         }else{
             echo "Invalid username and password";

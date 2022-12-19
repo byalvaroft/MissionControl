@@ -50,7 +50,9 @@
   <div id="PrincipalAdaptativo">
 
     <div id="container">
-        <a class="login_button" href="login.php">Entrar</a>
+        <a class="login_button" href="register.php">Register</a>
+        <a style="right: 12%"class="login_button" href="login.php">Login</a>
+
 
       
     <h1>Apollo Airways</h1>
@@ -90,11 +92,11 @@
           </div>
         </div>
         <div class="row">
-          <div id="zonaimagen" class="col-xs-12 col-md-6">
+          <div style="background-color: transparent" id="zonaimagen" class="col-xs-12 col-md-6">
 
 
 
-            <div class="slider"></div>
+            <div style="background-color: transparent" class="slider"></div>
 
 
           </div>
@@ -108,20 +110,6 @@
 
          
           <div id="footer" class="col-xs-12">
-          
-
-            
-
-
-            <div class="row">
-
-          
-              <video width="100%" controls src="src/aunnoexiste.mp4" poster="src/FondoVideo.png"></video>
-
-             
-              
-            </div>
-
 
 
               <div id="carousel" class="carousel slide" data-bs-ride="carousel">
@@ -150,6 +138,11 @@
 
               <div id="placeholderabajo">
                 <img src="src/placeholderabajo.png" style="width: 100%" alt="">
+              </div>
+
+              <div style="background-color: black; height: 600px">
+                  <div class="text-center">The trip of your life time</div>
+                  <a style="right: 45%; top: 80%; " class="login_button" href="login.php">Book Now</a>
               </div>
 
             </div>

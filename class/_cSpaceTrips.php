@@ -1,7 +1,7 @@
 <?php
 include_once "inc.php";
 
-class cSpaceTrips {
+class _cSpaceTrips {
 
   private $id;
   private $destination;
@@ -59,58 +59,93 @@ class cSpaceTrips {
     return $result;
   }
 
+public static function selectScheduled() {
+        $con = _cAccesoBD::obtener();
+
+        $sql = "SELECT * FROM space_trips where status = 'scheduled'";
+        $result = $con->_EjecutarQuery($sql);
+
+        return $result;
+}
+
 
   public function update() {
     $con = _cAccesoBD::obtener();
 
-
     $sql = "UPDATE space_trips
             SET destination = '$this->destination', duration = '$this->duration', departure_date = '$this->departure_date', return_date = '$this->return_date', status = '$this->status'
             WHERE id = $this->id";
+
+
     $result = $con->_EjecutarQuery($sql);
 
 
     return $result;
   }
 
+    public static function editTrip($id, $destination, $duration, $departure_date, $return_date, $status) {
+        $trip = new _cSpaceTrips();
+
+        $trip->setId($id);
+        $trip->setDestination($destination);
+        $trip->setDuration($duration);
+        $trip->setDepartureDate($departure_date);
+        $trip->setReturnDate($return_date);
+        $trip->setStatus($status);
+
+        $result = $trip->update();
+
+        return $result;
+    }
+
+    public static function deleteTrip($id): bool {
+
+        $trip = new _cSpaceTrips();
+
+        $trip->setId($id);
+
+        $result = $trip->delete();
+
+        return $result;
+
+    }
 
   public function delete() {
     $con = _cAccesoBD::obtener();
 
     $sql = "DELETE FROM space_trips WHERE id = $this->id";
+
     $result = $con->_EjecutarQuery($sql);
 
     return $result;
   }
 
-    public static function insertNewTrip($destination, $duration, $departure_date, $return_date, $status): string {
+    public static function insertNewTrip($destination, $duration, $departure_date, $return_date, $status): bool {
 
-        $trip = new cSpaceTrips();
+        $trip = new _cSpaceTrips();
 
-        $trip->setDestination('Mars');
-        $trip->setDuration(180);
-        $trip->setDepartureDate('2023-05-01');
-        $trip->setReturnDate('2024-11-01');
-        $trip->setStatus('scheduled');
+        $trip->setDestination($destination);
+        $trip->setDuration($duration);
+        $trip->setDepartureDate($departure_date);
+        $trip->setReturnDate($return_date);
+        $trip->setStatus($status);
 
         $result = $trip->insert();
-        if ($result === TRUE) {
-            return "Trip added successfully";
-        } else {
-            return "Error: " . $con->error;
-        }
+
+        return $result;
 
     }
 
     public function insert() {
         $con = _cAccesoBD::obtener();
 
-        // Execute the INSERT statement
         $sql = "INSERT INTO space_trips (destination, duration, departure_date, return_date, status)
           VALUES ('$this->destination', '$this->duration', '$this->departure_date', '$this->return_date', '$this->status')";
+
+        // _cFuncionesPHP::pred($sql,"SQL");
+
         $result = $con->_EjecutarQuery($sql);
 
-        // Return the result
         return $result;
     }
 }

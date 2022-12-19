@@ -1,9 +1,20 @@
 <html>
 <head>
+    <title>Apollo Airways</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 
     <style>
         .card {
             margin-top: 20px;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
         }
         /* Modal styles */
         #addTripModal .modal-content {
@@ -41,16 +52,58 @@
 
         .close{
             right: 16px;
-            top: 12px;
+            top: 5px;
             position: absolute;
+        }
+
+        .boton-tabla{
+            width: 70px;
+        }
+
+        .trips:hover,
+        .bookings:hover,
+        .customers:hover {
+            background-color: #ccc;
+            color: #333;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+
+        .btn-add{
+            color: white !important;
+            font-weight: bold;
+            background-color: green;
+        }
+        .btn-add:hover{
+            background-color: #004d00;
+        }
+
+        .fade-in-item {
+            opacity: 0;
+            animation: fade-in 1s;
+            animation-delay: 0.5s;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
     </style>
 </head>
 <body>
 
+<img src="src/capas/capa6.gif" style="height: 20%;" class="img-fluid mx-auto d-block" alt="Your logo">
+
 <!-- Modal addTrip -->
-<div class="modal fade" id="addTripModal" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
+<div class="modal" id="addTripModal" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,42 +113,120 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Form to insert a new trip -->
-                <form>
+                <form method="post" action="panel_admin_proc.php" id="formTrips">
+                    <input type="hidden" name="operacion" id="operation-formTrips" value="addTrip">
+                    <input type="hidden" id="idTrip" name="idTrip" value="">
                     <div class="form-group">
                         <label for="destination">Destination</label>
-                        <input type="text" class="form-control" id="destination" placeholder="Enter destination">
+                        <input type="text" class="form-control" name="destination" id="destination" placeholder="Enter destination">
                     </div>
                     <div class="form-group">
                         <label for="duration">Duration</label>
-                        <input type="number" class="form-control" id="duration" placeholder="Enter duration (days)">
+                        <input type="number" class="form-control" name="duration" id="duration" placeholder="Enter duration (days)" readonly>
                     </div>
                     <div class="form-group">
                         <label for="departureDate">Departure Date</label>
-                        <input type="date" class="form-control" id="departureDate" placeholder="Enter departure date">
+                        <input type="date" class="form-control" name="departureDate" id="departureDate" placeholder="Enter departure date" onchange="updateDuration()">
                     </div>
                     <div class="form-group">
                         <label for="returnDate">Return Date</label>
-                        <input type="date" class="form-control" id="returnDate" placeholder="Enter return date">
+                        <input type="date" class="form-control" name="returnDate" id="returnDate" placeholder="Enter return date" onchange="updateDuration()">
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select class="form-control" id="status">
+                        <select class="form-control" name="status" id="status">
+                            <option disabled selected>Select Status</option>
                             <option>scheduled</option>
                             <option>in progress</option>
                             <option>completed</option>
                         </select>
                     </div>
+
+
+                    <div class="modal-footer">
+                        <input type="button" value="Cancel" class="btn btn-secondary" class="close" data-dismiss="modal">
+                        <input type="submit" id="submit-trips" value="Add" class="btn btn-primary">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Modal addBooking -->
+<div class="modal" id="addBookingModal" tabindex="-1" role="dialog" aria-labelledby="addBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookingModalLabel">Add New Booking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="close" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to insert a new booking -->
+                <form method="post" action="panel_admin_proc.php" id="formBookings">
+                    <input type="hidden" name="operacion" id='operation-formBookings' value="addBooking">
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID:</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="trip_id">Trip ID:</label>
+                        <select class="form-control" id="trip_id" name="trip_id">
+                            <?php
+                            $trips = _cSpaceTrips::selectScheduled();
+
+                            foreach ($trips as $trip) {
+                                echo '<option value="' . $trip['id'] . '">'. $trip['id'] . " " . $trip['destination'] . ' (' . $trip['departure_date'] . ')' . '</option>';
+                            }
+                            ?>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking_date">Booking Date:</label>
+                        <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_tickets">Number of Tickets:</label>
+                        <input type="number" class="form-control" id="num_tickets" name="num_tickets" required>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Trip</button>
+                <button type="submit" class="btn btn-primary" form="formBookings">Add Booking</button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal eraseTrip -->
+<div class="modal" id="erase_trip" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="margin-top: calc(50vh - 50px);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addTripModalLabel">Are you sure you want to delete the trip?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="close" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_erase_trip" method="post" action="panel_admin_proc.php">
+                    <input type='hidden' name='operacion' value='delTrip'/>
+                    <input type='hidden' id='tripid_erase_trip' name='tripid' value=''/>
+                    <div class="text-center">
+                        <input type="button" class="btn btn-link" data-dismiss="modal" value="Cancel">
+                        <input type="submit" id="btn_erase_trip" class="btn btn-danger" value="Erase Trip">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+</div>
 
 
 <div class="container-fluid">
@@ -107,18 +238,18 @@
                 <div class="card-header">
                     Space Trip Admin Panel
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="#trips">Trips</a></li>
-                    <li class="list-group-item"><a href="#bookings">Bookings</a></li>
-                    <li class="list-group-item"><a href="#customers">Customers</a></li>
+                <ul class="list-group list-group-flush" id="navMenu">
+                    <li style="opacity: 0%" class="list-group-item trips" onclick="showTrips()">Trips</li>
+                    <li style="opacity: 0%" class="list-group-item bookings" onclick="showBookings()">Bookings</li>
+                    <li style="opacity: 0%" class="list-group-item customers" onclick="showCustomers()">Customers</li>
                 </ul>
             </div>
         </div>
         <div class="col-sm-9">
             <!-- Main content -->
-            <div class="card">
+            <div class="card" id="trips">
                 <div class="card-header">
-                    <h4>Trips <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTripModal">Add New Trip</a></h4>
+                    <h4>Trips <a style="display: flex" type="button" class="btn btn-primary btn-add float-right" data-toggle="modal" data-target="#addTripModal" onclick="cleanModal()">Add New Trip<i class="material-icons">add</i></a></h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -140,40 +271,93 @@
                             <tbody>
                             <?php
 
-
-                            $trips = cSpaceTrips::selectAll();
+                            $trips = _cSpaceTrips::selectAll();
 
                             foreach ($trips as $trip) {
                                 echo "<tr>";
                                 echo "<td>".$trip['id']."</td>";
-                                echo "<td>".$trip['destination']."</td>";
-                                echo "<td>".$trip['duration']."</td>";
-                                echo "<td>".$trip['departure_date']."</td>";
-                                echo "<td>".$trip['return_date']."</td>";
-                                echo "<td>".$trip['status']."</td>";
+                                echo "<td value='" . $trip['destination'] . "' id='destination" . $trip['id'] . "'>" . $trip['destination'] . "</td>";
+                                echo "<td value='" . $trip['duration'] . "' id='duration" . $trip['id'] . "'>" . $trip['duration'] . "</td>";
+                                echo "<td value='" . $trip['departure_date'] . "' id='departureDate" . $trip['id'] . "'>" . $trip['departure_date'] . "</td>";
+                                echo "<td value='" . $trip['return_date'] . "' id='returnDate" . $trip['id'] . "'>" . $trip['return_date'] . "</td>";
+
+                                echo "<td style='position: relative; border-radius: 5px;'>";
+
+                                switch ($trip['status']) {
+                                    case "in progress":
+                                        echo "<span id='status" . $trip['id'] . "' style='position: absolute; top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid yellow; border-radius: 5px; padding: 2px 6px; background-color: rgba(255, 255, 0, 0.2);'>" . $trip['status'] . "</span>";
+                                        break;
+                                    case "scheduled":
+                                        echo "<span id='status" . $trip['id'] . "' style='position: absolute; top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid blue; border-radius: 5px; padding: 2px 6px; background-color: rgba(0, 0, 255, 0.2);'>" . $trip['status'] . "</span>";
+                                        break;
+                                    case "completed":
+                                        echo "<span id='status" . $trip['id'] . "' style='position: absolute; top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid green; border-radius: 5px; padding: 2px 6px; background-color: rgba(0, 255, 0, 0.2);'>" . $trip['status'] . "</span>";
+                                        break;
+                                }
+
+                                echo "</td>";
 
                                 // Acciones
-                                echo "<td><a href='edit.php?id=".$trip['id']."' class='btn btn-primary'>Edit</a></td>";
-                                echo "<td><a href='delete.php?id=".$trip['id']."' class='btn btn-danger'>Erase</a></td>";
+                                echo "<td><input id='" . $trip['id'] . "' class='boton-tabla btn btn-primary' onClick='editTrip(this.id)' value='Edit'></td>";
+                                echo "<td><input id='" . $trip['id'] . "' class='boton-tabla btn btn-danger' onClick='eraseTrip(this.id)' value='Erase'></td>";
                                 echo "</tr>";
                             }
                             ?>
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
+            <div style="display: none" class="card" id="bookings">
                 <div class="card-header">
-                    <h4>Bookings</h4>
+                    <h4>Bookings<a type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addBookingModal" onclick="cleanModal()">Add New Booking</a></h4>
                 </div>
                 <div class="card-body">
-                    <!-- Booking data goes here -->
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+
+                            <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Trip ID</th>
+                                <th>User ID</th>
+                                <th>Booking Date</th>
+                                <th>Travelers</th>
+                                <th>Edit</th>
+                                <th>Erase</th>
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <?php
+
+                            $bookings = _cBookings::selectAll();
+
+                            foreach ($bookings as $booking) {
+                                echo "<tr>";
+                                echo "<td>".$booking['booking_id']."</td>";
+                                echo "<td value='" . $booking['trip_id'] . "' id='trip_id" . $booking['booking_id'] . "'>" . $booking['trip_id'] . "</td>";
+                                echo "<td value='" . $booking['user_id'] . "' id='user_id" . $booking['booking_id'] . "'>" . $booking['user_id'] . "</td>";
+                                echo "<td value='" . $booking['booking_date'] . "' id='booking_date" . $booking['booking_id'] . "'>" . $booking['num_travelers'] . "</td>";
+                                echo "<td value='" . $booking['num_travelers'] . "' id='num_travelers" . $booking['booking_id'] . "'>" . $booking['num_travelers'] . "</td>";
+
+                                // Acciones
+                                echo "<td><input id='" . $booking['booking_id'] . "' class='boton-tabla btn btn-primary' onClick='editBooking(this.id)' value='Edit'></td>";
+                                echo "<td><input id='" . $booking['booking_id'] . "' class='boton-tabla btn btn-danger' onClick='eraseBooking(this.id)' value='Erase'></td>";
+                                echo "</tr>";
+                            }
+                            ?>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
+            <div style="display: none" class="card" id="customers">
                 <div class="card-header">
                     <h4>Customers</h4>
                 </div>
@@ -185,5 +369,135 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('li').each(function(index) {
+            // Store a reference to the current element
+            var currentElement = $(this);
+            // Set a timeout to fade in the current element after a certain delay
+            setTimeout(function() {
+                // Use the stored reference to the current element
+                currentElement.addClass('fade-in-item');
+            }, index * 250); // 500ms delay between each element
+        });
+    });
+
+    const formTrips = document.querySelector('#formTrips');
+
+    formTrips.addEventListener('submit', function(event) {
+
+        event.preventDefault();
+
+        const destination = document.querySelector('#destination');
+        const duration = document.querySelector('#duration');
+        const departureDate = document.querySelector('#departureDate');
+        const returnDate = document.querySelector('#returnDate');
+        const status = document.querySelector('#status');
+
+
+        if (destination.value.trim() === '') {
+            alert('Please enter a destination');
+            return;
+        }
+
+        if (departureDate.value.trim() === '') {
+            alert('Please enter a departure date');
+            return;
+        }
+
+        if (returnDate.value.trim() === '') {
+            alert('Please enter a return date');
+            return;
+        }
+
+
+        if (duration.value < 0) {
+            alert('The return date must be after the departure date');
+            return;
+        }
+
+
+        if (status.value === 'Select Status') {
+            alert('Please select a valid status');
+            return;
+        }
+
+        formTrips.submit();
+    });
+
+
+    function editTrip(idTrip) {
+        document.getElementById("idTrip").value = idTrip;
+        document.getElementById("destination").value = document.getElementById("destination" + String(idTrip)).getAttribute('value');
+        document.getElementById("duration").value = document.getElementById("duration" + String(idTrip)).getAttribute('value');
+        document.getElementById("departureDate").value = document.getElementById("departureDate" + String(idTrip)).getAttribute('value');
+        document.getElementById("returnDate").value = document.getElementById("returnDate" + String(idTrip)).getAttribute('value');
+        document.getElementById("operation-formTrips").value = "editTrip";
+        document.getElementById("submit-trips").value = "Edit";
+        document.getElementById("addTripModalLabel").innerHTML = "Edit Trip " + String(idTrip);
+        $('#status').val(document.getElementById("status" + String(idTrip)).innerHTML);
+        $('#status').change;
+
+
+        $("#addTripModal").modal();
+
+    }
+
+    function cleanModal(){
+        document.getElementById("destination").value = "";
+        document.getElementById("duration").value = "";
+        document.getElementById("departureDate").value = "";
+        document.getElementById("operation-formTrips").value = "addTrip";
+        document.getElementById("submit-trips").value = "Add";
+        document.getElementById("addTripModalLabel").innerHTML = "Add New Trip";
+        document.getElementById("returnDate").value = "";
+        $('#status').val();
+        $('#status').change;
+    }
+
+
+
+    function eraseTrip(idTrip) {
+        $("#erase_trip").modal();
+        document.getElementById("tripid_erase_trip").setAttribute("value", idTrip);
+    }
+
+    function updateDuration() {
+        // Get the values of the departure date and return date fields
+        var departureDate = document.querySelector('input[name="departureDate"]').value;
+        var returnDate = document.querySelector('input[name="returnDate"]').value;
+
+        // Calculate the difference between the departure date and return date in days
+        var duration = Math.round((new Date(returnDate) - new Date(departureDate)) / (1000 * 60 * 60 * 24));
+
+        // Set the value of the duration field to the calculated number of days
+        document.querySelector('input[name="duration"]').value = duration;
+    }
+
+
+    function showTrips() {
+        $('#trips').show();
+        $('#bookings').hide();
+        $('#costumers').hide();
+    }
+
+    function showBookings() {
+        $('#trips').hide();
+        $('#bookings').show();
+        $('#costumers').hide();
+    }
+
+    function showCustomers() {
+        $('#trips').hide();
+        $('#bookings').hide();
+        $('#costumers').show();
+    }
+
+
+</script>
+
 </body>
 </html>
