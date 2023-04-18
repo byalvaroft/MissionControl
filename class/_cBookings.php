@@ -56,6 +56,22 @@ return $result;
 
 }
 
+public static function selectAllxUserData() {
+
+    $con = _cAccesoBD::obtener();
+    
+    $sql = "SELECT users.id, users.nombre, users.apellidos, users.username, space_trips.program_id, bookings.trip_id, bookings.booking_id, bookings.num_travelers, bookings.booking_date
+    FROM bookings
+    JOIN users ON bookings.user_id = users.id
+    JOIN space_trips ON bookings.trip_id = space_trips.id;";
+    
+    
+    $result = $con->_EjecutarQuery($sql);
+    
+    return $result;
+    
+    }
+
 
 public function update() {
 $con = _cAccesoBD::obtener();
@@ -69,7 +85,7 @@ return $result;
 }
 
 public static function deleteBooking($booking_id): bool {
-$booking = new Booking();
+$booking = new _cBookings();
 
 $booking->setBookingId($booking_id);
 
@@ -87,6 +103,10 @@ $result = $con->_EjecutarQuery($sql);
 
 return $result;
 
+}
+
+public static function formatBookingID($bookingID) {
+    return 'BK-' . str_pad($bookingID, 6, '0', STR_PAD_LEFT);
 }
 
     public static function insertNewBooking($trip_id, $user_id, $num_travelers): bool {

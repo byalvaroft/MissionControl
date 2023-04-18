@@ -9,6 +9,8 @@
 
 
     <style>
+
+        
         .card {
             margin-top: 20px;
             -webkit-user-select: none; /* Safari */
@@ -96,13 +98,42 @@
             }
         }
 
+        .filter-inputs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .filter-inputs label {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    .filter-inputs input,
+    .filter-inputs select {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.15s ease-in-out;
+    }
+
+    .filter-inputs input:focus,
+    .filter-inputs select:focus {
+        border-color: #66afe9;
+    }
+
+
     </style>
 </head>
 <body>
 
 <img src="src/capas/capa6.gif" style="height: 20%;" class="img-fluid mx-auto d-block" alt="Your logo">
 
-<!-- Modal addTrip -->
+<!-- Add/Edit Trip Modal  -->
 <div class="modal" id="addTripModal" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -117,8 +148,15 @@
                     <input type="hidden" name="operacion" id="operation-formTrips" value="addTrip">
                     <input type="hidden" id="idTrip" name="idTrip" value="">
                     <div class="form-group">
-                        <label for="destination">Destination</label>
-                        <input type="text" class="form-control" name="destination" id="destination" placeholder="Enter destination">
+                        <label for="program">Program</label>
+                        <select class="form-control" name="program" id="program">
+                            <?php
+                            $programs = _cPrograms::selectAll();
+                            foreach ($programs as $program) {
+                                echo "<option value='" . $program['program_id'] . "'>" . $program['name'] . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="duration">Duration</label>
@@ -154,6 +192,55 @@
     </div>
 
 </div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal" id="addEditUserModal" tabindex="-1" role="dialog" aria-labelledby="addEditUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEditUserModalLabel">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="close" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="panel_admin_proc.php" id="formUsers">
+          <input type="hidden" name="operacion" id="operation-formUsers" value="editUser">
+          <input type="hidden" id="id_user" name="id_user" value="">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter Nombre">
+          </div>
+          <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Enter Apellidos">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email">
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username">
+          </div>
+          <div class="form-group">
+            <label for="rol">Rol</label>
+            <select class="form-control" name="rol" id="rol">
+              <option disabled>Select Role</option>
+              <option value=<?= _cUsers::CLIENTE ?>>Cliente</option>
+              <option value=<?= _cUsers::ADMIN ?>>Admin</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <input type="button" value="Cancel" class="btn btn-secondary" class="close" data-dismiss="modal">
+            <input type="submit" id="submit-users" value="Save Changes" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal addBooking -->
 <div class="modal" id="addBookingModal" tabindex="-1" role="dialog" aria-labelledby="addBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -187,24 +274,34 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="booking_date">Booking Date:</label>
-                        <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                        <label for="booking_date">Customer:</label>
+                        <select class="form-control" id="user_id" name="user_id">
+                            <?php
+                            $users = _cUsers::selectAll();
+
+                            foreach ($users as $user) {
+                                echo '<option value="' . $user['id'] . '">'. $user['username'] . " " . _cUsers::formatUserID($user['id'])  . '</option>';
+                            }
+                            ?>
+
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="num_tickets">Number of Tickets:</label>
-                        <input type="number" class="form-control" id="num_tickets" name="num_tickets" required>
+                        <label for="num_travelers">Number of Travelers:</label>
+                        <input type="number" class="form-control" id="num_travelers" name="num_travelers" min="1" step="1" required>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-link" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Book">
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="formBookings">Add Booking</button>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Modal eraseTrip -->
-<div class="modal" id="erase_trip" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
+<div class="modal" id="erase_trip" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document" style="margin-top: calc(50vh - 50px);">
         <div class="modal-content">
             <div class="modal-header">
@@ -226,6 +323,56 @@
         </div>
     </div>
 
+</div>
+
+<!-- Modal eraseBooking -->
+<div class="modal" id="erase_booking" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="margin-top: calc(50vh - 50px);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addTripModalLabel">Are you sure you want to delete the booking?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="close" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_erase_booking" method="post" action="panel_admin_proc.php">
+                    <input type='hidden' name='operacion' value='delBooking'/>
+                    <input type='hidden' id='bookingid_erase_booking' name='bookingid' value=''/>
+                    <div class="text-center">
+                        <input type="button" class="btn btn-link" data-dismiss="modal" value="Cancel">
+                        <input type="submit" id="btn_erase_booking" class="btn btn-danger" value="Erase Booking">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal eraseUser -->
+
+<div class="modal" id="erase_user" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" role="document" style="margin-top: calc(50vh - 50px);">
+        <div class="modal-content">
+        <div class="modal-header">
+                <h4 class="modal-title" id="delUserModalLabel">Are you sure you want to delete this User?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="close" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_erase_user" action="panel_admin_proc.php" method="post">
+                    <input type="hidden" name="operacion" value="delUser">
+                    <input type="hidden" name="userid" id="userid_erase_user">
+                    <div class="text-center">
+                        <input type="button" class="btn btn-link" data-dismiss="modal" value="Cancel">
+                        <input type="submit" id="btn_erase_booking" class="btn btn-danger" value="Erase User">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -253,33 +400,33 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Trip ID</th>
+                    <th>Program</th>
+                    <th>Duration</th>
+                    <th>Departure Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Erase</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $trips = _cSpaceTrips::selectAllXPrograms();
 
-                            <thead>
-                            <tr>
-                                <th>Trip ID</th>
-                                <th>Destination</th>
-                                <th>Duration</th>
-                                <th>Departure Date</th>
-                                <th>Return Date</th>
-                                <th>Status</th>
-                                <th>Edit</th>
-                                <th>Erase</th>
-                            </tr>
-                            </thead>
+            
+                foreach ($trips as $trip) {
 
-                            <tbody>
-                            <?php
-
-                            $trips = _cSpaceTrips::selectAll();
-
-                            foreach ($trips as $trip) {
-                                echo "<tr>";
-                                echo "<td>".$trip['id']."</td>";
-                                echo "<td value='" . $trip['destination'] . "' id='destination" . $trip['id'] . "'>" . $trip['destination'] . "</td>";
-                                echo "<td value='" . $trip['duration'] . "' id='duration" . $trip['id'] . "'>" . $trip['duration'] . "</td>";
-                                echo "<td value='" . $trip['departure_date'] . "' id='departureDate" . $trip['id'] . "'>" . $trip['departure_date'] . "</td>";
-                                echo "<td value='" . $trip['return_date'] . "' id='returnDate" . $trip['id'] . "'>" . $trip['return_date'] . "</td>";
+                    echo "<tr>";
+                    echo "<td>"._cSpaceTrips::formatTripID($trip['id'])."</td>";
+                    echo "<td><span id='programName" . $trip['id'] . "'>" . $trip['name'] . "</span>";
+                    echo "<input type='hidden' value='" . $trip['program_id'] . "' id='program_id" . $trip['id'] . "'></td>";
+                    echo "<td value='" . $trip['duration'] . "' id='duration" . $trip['id'] . "'>" . $trip['duration'] . "</td>";
+                    echo "<td value='" . $trip['departure_date'] . "' id='departureDate" . $trip['id'] . "'>" . $trip['departure_date'] . "</td>";
+                    echo "<td value='" . $trip['return_date'] . "' id='returnDate" . $trip['id'] . "'>" . $trip['return_date'] . "</td>";
 
                                 echo "<td style='position: relative; border-radius: 5px;'>";
 
@@ -310,9 +457,91 @@
                 </div>
             </div>
 
+
+
             <div style="display: none" class="card" id="bookings">
                 <div class="card-header">
-                    <h4>Bookings<a type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addBookingModal" onclick="cleanModal()">Add New Booking</a></h4>
+                <h4>Bookings <a style="display: flex" type="button" class="btn btn-primary btn-add float-right" data-toggle="modal" data-target="#addBookingModal" onclick="cleanModal()">Add New Booking<i class="material-icons">add</i></a></h4>
+                </div>
+
+                
+
+
+
+                <div class="card-body">
+
+
+                    <!-- Filter inputs -->
+                <div class="filter-inputs">
+                    <label for="filter-program">Program:</label>
+                    <select id="filter-program">
+
+                    <option selected value="">All Programs</option>
+                    <?php
+
+                    $programs = _cPrograms::selectAll();
+
+                    foreach ($programs as $program) {
+                        echo '<option value="' . $program['program_id'] . '">' . $program['name'] . '</option>';
+                    }
+                    ?>
+                    </select>
+                    <label for="filter-user">User:</label>
+                    <input type="text" id="filter-user" placeholder="Search by user">
+                    <label for="filter-date">Booking Date:</label>
+                    <input type="date" id="filter-date" placeholder="Search by booking date">
+                </div>
+
+
+                    <div class="table-responsive">
+                    <table class="table table-striped" id="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Trip ID</th>
+                                <th>Program ID</th>
+                                <th>User ID</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Username</th>
+                                <th>Booking Date</th>
+                                <th>Travelers</th>
+                                <th>Erase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $bookings = _cBookings::selectAllxUserData();
+
+                                
+
+                               foreach ($bookings as $booking) {
+
+                                    echo "<tr>";
+                                    echo "<td>"._cBookings::formatBookingID($booking['booking_id'])."</td>";
+                                    echo "<td>"._cSpaceTrips::formatTripID($booking['trip_id'])."</td>";
+                                    echo "<td>"._cPrograms::formatProgramID($booking['program_id'])."</td>";
+                                    echo "<td>"._cUsers::formatUserID($booking['id'])."</td>";
+                                    echo "<td>".$booking['nombre']."</td>";
+                                    echo "<td>".$booking['apellidos']."</td>";
+                                    echo "<td>".$booking['username']."</td>";
+                                    echo "<td>".$booking['booking_date']."</td>";
+                                    echo "<td>".$booking['num_travelers']."</td>";
+
+                                    // Acciones
+                                    echo "<td><input id='".$booking['booking_id']."' class='boton-tabla btn btn-danger' onClick='eraseBooking(this.id)' value='Erase'></td>";
+                                    echo "</tr>";
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: none" class="card" id="costumers">
+                <div class="card-header">
+                    <h4>Customers</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -320,11 +549,12 @@
 
                             <thead>
                             <tr>
-                                <th>Booking ID</th>
-                                <th>Trip ID</th>
                                 <th>User ID</th>
-                                <th>Booking Date</th>
-                                <th>Travelers</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Email</th>
+                                <th>Usuario</th>
+                                <th>Rol</th>
                                 <th>Edit</th>
                                 <th>Erase</th>
 
@@ -334,35 +564,38 @@
                             <tbody>
                             <?php
 
-                            $bookings = _cBookings::selectAll();
+                            $users = _cUsers::selectAll();
 
-                            foreach ($bookings as $booking) {
+                            foreach ($users as $user) {
                                 echo "<tr>";
-                                echo "<td>".$booking['booking_id']."</td>";
-                                echo "<td value='" . $booking['trip_id'] . "' id='trip_id" . $booking['booking_id'] . "'>" . $booking['trip_id'] . "</td>";
-                                echo "<td value='" . $booking['user_id'] . "' id='user_id" . $booking['booking_id'] . "'>" . $booking['user_id'] . "</td>";
-                                echo "<td value='" . $booking['booking_date'] . "' id='booking_date" . $booking['booking_id'] . "'>" . $booking['num_travelers'] . "</td>";
-                                echo "<td value='" . $booking['num_travelers'] . "' id='num_travelers" . $booking['booking_id'] . "'>" . $booking['num_travelers'] . "</td>";
-
+                                echo "<td>"._cUsers::formatUserID($user['id'])."</td>";
+                                echo "<td value='" . $user['nombre'] . "' id='nombre" . $user['id'] . "'>" . $user['nombre'] . "</td>";
+                                echo "<td value='" . $user['apellidos'] . "' id='apellidos" . $user['id'] . "'>" . $user['apellidos'] . "</td>";
+                                echo "<td value='" . $user['email'] . "' id='email" . $user['id'] . "'>" . $user['email'] . "</td>";
+                                echo "<td value='" . $user['username'] . "' id='username" . $user['id'] . "'>" . $user['username'] . "</td>";
+                                echo "<td value='" . $user['authtipo'] . "'>";
+                                switch ($user['authtipo']) {
+                                    case "10":
+                                        echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid grey; border-radius: 5px; padding: 2px 6px; background-color: rgba(108, 122, 137, 0.2);'>" . "CLIENTE" . "</span>";
+                                        break;
+                                    case "20":
+                                        echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid red; border-radius: 5px; padding: 2px 6px; background-color: rgba(255, 0, 0, 0.2);'>" . "ADMIN" . "</span>";
+                                        break;
+                                }
+                            
+                                echo "</td>";
+                                
                                 // Acciones
-                                echo "<td><input id='" . $booking['booking_id'] . "' class='boton-tabla btn btn-primary' onClick='editBooking(this.id)' value='Edit'></td>";
-                                echo "<td><input id='" . $booking['booking_id'] . "' class='boton-tabla btn btn-danger' onClick='eraseBooking(this.id)' value='Erase'></td>";
+                                echo "<td><input id='" . $user['id'] . "' class='boton-tabla btn btn-primary' onClick='editUser(this.id)' value='Edit'></td>";
+                                echo "<td><input id='" . $user['id'] . "' class='boton-tabla btn btn-danger' onClick='eraseUser(this.id)' value='Erase'></td>";
                                 echo "</tr>";
                             }
+                          
                             ?>
 
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-
-            <div style="display: none" class="card" id="customers">
-                <div class="card-header">
-                    <h4>Customers</h4>
-                </div>
-                <div class="card-body">
-                    <!-- Customer data goes here -->
                 </div>
             </div>
 
@@ -385,6 +618,25 @@
         });
     });
 
+    window.addEventListener('load', function () {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    
+    const trp = urlSearchParams.get('trp');
+    const bk = urlSearchParams.get('bk');
+    const usr = urlSearchParams.get('usr');
+    
+    if (trp) {
+        showTrips();
+    }
+    if (bk) {
+        showBookings();
+    }
+    if (usr) {
+        showCustomers();
+    }
+
+});
+
     const formTrips = document.querySelector('#formTrips');
 
     formTrips.addEventListener('submit', function(event) {
@@ -398,8 +650,8 @@
         const status = document.querySelector('#status');
 
 
-        if (destination.value.trim() === '') {
-            alert('Please enter a destination');
+        if (program.value.trim() === '') {
+            alert('Please select a program');
             return;
         }
 
@@ -430,24 +682,62 @@
 
 
     function editTrip(idTrip) {
-        document.getElementById("idTrip").value = idTrip;
-        document.getElementById("destination").value = document.getElementById("destination" + String(idTrip)).getAttribute('value');
-        document.getElementById("duration").value = document.getElementById("duration" + String(idTrip)).getAttribute('value');
-        document.getElementById("departureDate").value = document.getElementById("departureDate" + String(idTrip)).getAttribute('value');
-        document.getElementById("returnDate").value = document.getElementById("returnDate" + String(idTrip)).getAttribute('value');
-        document.getElementById("operation-formTrips").value = "editTrip";
-        document.getElementById("submit-trips").value = "Edit";
-        document.getElementById("addTripModalLabel").innerHTML = "Edit Trip " + String(idTrip);
-        $('#status').val(document.getElementById("status" + String(idTrip)).innerHTML);
-        $('#status').change;
+    document.getElementById("idTrip").value = idTrip;
+    document.getElementById("program").value = document.getElementById("program_id" + String(idTrip)).getAttribute('value');
+    document.getElementById("duration").value = document.getElementById("duration" + String(idTrip)).getAttribute('value');
+    document.getElementById("departureDate").value = document.getElementById("departureDate" + String(idTrip)).getAttribute('value');
+    document.getElementById("returnDate").value = document.getElementById("returnDate" + String(idTrip)).getAttribute('value');
+    document.getElementById("operation-formTrips").value = "editTrip";
+    document.getElementById("submit-trips").value = "Edit";
+    document.getElementById("addTripModalLabel").innerHTML = "Edit Trip " + String(idTrip);
+    $('#status').val(document.getElementById("status" + String(idTrip)).innerHTML);
+    $('#status').change();
 
+    $("#addTripModal").modal();
+}
 
-        $("#addTripModal").modal();
+    function editUser(id) {
+        document.getElementById("operation-formUsers").value = "editUser";
+        document.getElementById("id_user").value = id;
+        document.getElementById("nombre").value = document.getElementById("nombre" + id).innerHTML;
+        document.getElementById("apellidos").value = document.getElementById("apellidos" + id).innerHTML;
+        document.getElementById("email").value = document.getElementById("email" + id).innerHTML;
+        document.getElementById("username").value = document.getElementById("username" + id).innerHTML;
+
+        // Get the role value from the table and trim any extra whitespace
+        var rol = document.getElementById("authtipo" + id).innerHTML.trim();
+
+        // Set the preselected value for the 'rol' dropdown
+        var rolSelect = document.getElementById("rol");
+        for (var i = 0; i < rolSelect.options.length; i++) {
+            if (rolSelect.options[i].text.trim().toUpperCase() === rol.toUpperCase()) {
+            rolSelect.selectedIndex = i;
+            break;
+            }
+        }
+
+     $("#addEditUserModal").modal("show");
 
     }
 
+    function addUser() {
+    $('#id_user').val('');
+    $('#nombre').val('');
+    $('#apellidos').val('');
+    $('#email').val('');
+    $('#username').val('');
+    $('#rol').val('');
+
+    $('#operation-formUsers').val('addUser');
+    $('#submit-users').val('Add User');
+    $('#editUserModalLabel').text('Add User');
+    $('#editUserModal').modal('show');
+    }
+
+
+
     function cleanModal(){
-        document.getElementById("destination").value = "";
+        document.getElementById("program").value = "";
         document.getElementById("duration").value = "";
         document.getElementById("departureDate").value = "";
         document.getElementById("operation-formTrips").value = "addTrip";
@@ -461,9 +751,26 @@
 
 
     function eraseTrip(idTrip) {
+
+
         $("#erase_trip").modal();
         document.getElementById("tripid_erase_trip").setAttribute("value", idTrip);
     }
+
+    function eraseBooking(idBooking) {
+
+        $("#erase_booking").modal();
+        document.getElementById("bookingid_erase_booking").setAttribute("value", idBooking);
+    }
+
+    function eraseUser(idUser) {
+
+    $("#erase_user").modal();
+    document.getElementById("userid_erase_user").setAttribute("value", idUser);
+
+    }
+
+
 
     function updateDuration() {
         // Get the values of the departure date and return date fields
@@ -496,6 +803,41 @@
         $('#costumers').show();
     }
 
+    function filterBookingsTable() {
+        let programSelect = document.getElementById("filter-program");
+        let userInput = document.getElementById("filter-user");
+        let dateInput = document.getElementById("filter-date");
+        let rows = document.querySelectorAll("#bookings-table tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        let programCell = rows[i].getElementsByTagName("td")[2];
+        let userCell = rows[i].getElementsByTagName("td")[6];
+        let dateCell = rows[i].getElementsByTagName("td")[7];
+
+        let shouldShow = true;
+
+        if (programSelect.value && !programCell.innerHTML.includes(programSelect.value)) {
+            shouldShow = false;
+        }
+
+        if (userInput.value && !userCell.innerHTML.toLowerCase().includes(userInput.value.toLowerCase())) {
+            shouldShow = false;
+        }
+
+        if (dateInput.value && !dateCell.innerHTML.startsWith(dateInput.value)) {
+            shouldShow = false;
+        }
+
+        rows[i].style.display = shouldShow ? "" : "none";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("filter-program").addEventListener("change", filterBookingsTable);
+    document.getElementById("filter-user").addEventListener("keyup", filterBookingsTable);
+    document.getElementById("filter-date").addEventListener("change", filterBookingsTable);
+});
 
 </script>
 

@@ -113,7 +113,37 @@ return $result;
         }
     }
 
+    public static function editUser($id, $nombre, $apellidos, $email, $username, $rol) {
+        $con = _cAccesoBD::obtener();
+    
+        $sql = "UPDATE users SET nombre = '$nombre', apellidos = '$apellidos', email = '$email', username = '$username', authtipo = '$rol' WHERE id = '$id'";
+        $result = $con->_EjecutarQuery($sql);
+    
+        return $result;
+    }
 
+    public static function deleteUser($id) {
+        $con = _cAccesoBD::obtener();
+        $sql = "DELETE FROM users WHERE id=$id";
+        return $con->_EjecutarQuery($sql);
+    }
+
+    public static function formatUserID($userID) {
+        return 'USR-' . str_pad($userID, 6, '0', STR_PAD_LEFT);
+    }
+
+    public static function selectAll() {
+
+        $con = _cAccesoBD::obtener();
+        
+        $sql = "SELECT * FROM users";
+        
+        
+        $result = $con->_EjecutarQuery($sql);
+        
+        return $result;
+        
+        }
 
 
 }

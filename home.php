@@ -18,7 +18,6 @@ if(isset($_POST['logout'])){
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body style="background-color: #eeeeee">
-<h1>Pagina Principal</h1>
 <form method='post' action="">
     <input style="background-color: black;" class="login_button" type="submit" value="Logout" name="logout">
 </form>
