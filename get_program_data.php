@@ -37,19 +37,57 @@ echo "<img class='program-banner' style='width: 100%; position: relative; top: -
 
 // Mostrar detalles del programa
 echo "<div class='program-details'>";
-echo "<p><h5>Level:</h5>" . $program["level"] . "</p>";
-echo "<p><h5>EVA:</h5>" . $program["eva"] . "</p>";
-echo "<p><h5>Travel Time:</h5>" . $program["travel_time"] . "</p>";
+echo "<h5>Level:</h5>";
+
+echo "<div class='program-level'>"; // Added container div for level image
+if ($program["level"] == 3) {
+    echo "<img class='program-level-image' src='src/logos/hard.png'>";
+} else if ($program["level"] == 2) {
+    echo "<img class='program-level-image' src='src/logos/medium.png'>";
+} else {
+    echo "<img class='program-level-image' src='src/logos/easy.png'>";
+}
+echo "</div>"; // Close the container div
+
+echo "<div class='program-icons'>"; // Added container div for icons
+
+if ($program["eva"] == 1) {
+    echo "<img class='program-icon' src='src/logos/eva1.png'>";
+} else {
+    echo "<img class='program-icon' src='src/logos/eva0.png'>";
+}
+
+if ($program["travel_time"] == 1) {
+    echo "<img class='program-icon' src='src/logos/time-1.png'>";
+} else if ($program["travel_time"] == 2) {
+    echo "<img class='program-icon' src='src/logos/time-2.png'>";
+} else if ($program["travel_time"] == 30) {
+    echo "<img class='program-icon' src='src/logos/time-30.png'>";
+} else {
+    echo "<img class='program-icon' src='src/logos/time-60.png'>";
+}
+
+if ($program["age_requirement"] == 13) {
+    echo "<img class='program-icon' src='src/logos/13.png'>";
+} else if ($program["age_requirement"] == 16) {
+    echo "<img class='program-icon' src='src/logos/16.png'>";
+} else {
+    echo "<img class='program-icon' src='src/logos/18.png'>";
+}
+
+echo "</div>";
+
 echo "<p><h5>Cargo:</h5>" . $program["cargo"] . "</p>";
 echo "<p><h5>Ship:</h5>" . $program["ship_type"] . "</p>";
-echo "<p><h5>Age Requirement:</h5>" . $program["age_requirement"] . "</p>";
 echo "</div>";
 
 // Mostrar descripción del programa
 echo "<p class='program-description'>" . $program["description"] . "</p>";
 
 // Formatear y mostrar highlights del programa
+echo "<div class='highlights'>";
 echo format_highlights($program['highlights']);
+echo "</div>";
 
 // Mostrar conclusión del programa
 echo "<p class='program-conclusion'>" . $program["conclusion"] . "</p>";
