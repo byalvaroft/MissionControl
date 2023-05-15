@@ -39,7 +39,7 @@ echo "<img class='program-banner' style='width: 100%; position: relative; top: -
 echo "<div class='program-details'>";
 echo "<h5>Level:</h5>";
 
-echo "<div class='program-level'>"; // Added container div for level image
+echo "<div class='program-level'>";
 if ($program["level"] == 3) {
     echo "<img class='program-level-image' src='src/logos/hard.png'>";
 } else if ($program["level"] == 2) {
@@ -47,9 +47,9 @@ if ($program["level"] == 3) {
 } else {
     echo "<img class='program-level-image' src='src/logos/easy.png'>";
 }
-echo "</div>"; // Close the container div
+echo "</div>";
 
-echo "<div class='program-icons'>"; // Added container div for icons
+echo "<div class='program-icons'>";
 
 if ($program["eva"] == 1) {
     echo "<img class='program-icon' src='src/logos/eva1.png'>";

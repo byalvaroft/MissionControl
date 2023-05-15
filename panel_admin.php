@@ -273,10 +273,8 @@
                                     echo '<option value="' . $trip['id'] . '">' . $trip['id'] . " " . $trip['destination'] . ' (' . $trip['departure_date'] . ')' . '</option>';
                                 }
                                 ?>
-
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="booking_date">Customer:</label>
                             <select class="form-control" id="user_id" name="user_id">
@@ -287,7 +285,6 @@
                                     echo '<option value="' . $user['id'] . '">' . $user['username'] . " " . _cUsers::formatUserID($user['id'])  . '</option>';
                                 }
                                 ?>
-
                             </select>
                         </div>
                         <div class="form-group">
@@ -467,11 +464,6 @@
                     <div class="card-header">
                         <h4>Bookings <a style="display: flex" type="button" class="btn btn-primary btn-add float-right" data-toggle="modal" data-target="#addBookingModal" onclick="cleanModal()">Add New Booking<i class="material-icons">add</i></a></h4>
                     </div>
-
-
-
-
-
                     <div class="card-body">
 
 
@@ -550,7 +542,6 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped">
-
                                 <thead>
                                     <tr>
                                         <th>User ID</th>
@@ -561,15 +552,11 @@
                                         <th>Rol</th>
                                         <th>Edit</th>
                                         <th>Erase</th>
-
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <?php
-
                                     $users = _cUsers::selectAll();
-
                                     foreach ($users as $user) {
                                         echo "<tr>";
                                         echo "<td>" . _cUsers::formatUserID($user['id']) . "</td>";
@@ -580,23 +567,21 @@
                                         echo "<td value='" . $user['authtipo'] . "'>";
                                         switch ($user['authtipo']) {
                                             case "10":
-                                                echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid grey; border-radius: 5px; padding: 2px 6px; background-color: rgba(108, 122, 137, 0.2);'>" . "CLIENTE" . "</span>";
+                                                echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px
+                                                 solid grey; border-radius: 5px; padding: 2px 6px; background-color: rgba(108, 122, 137, 0.2);'>" . "CLIENTE" . "</span>";
                                                 break;
                                             case "20":
-                                                echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px solid red; border-radius: 5px; padding: 2px 6px; background-color: rgba(255, 0, 0, 0.2);'>" . "ADMIN" . "</span>";
+                                                echo "<span id='authtipo" . $user['id'] . "' style='top: 50%; transform: translateY(-50%); left: -6px; border: 2px
+                                                 solid red; border-radius: 5px; padding: 2px 6px; background-color: rgba(255, 0, 0, 0.2);'>" . "ADMIN" . "</span>";
                                                 break;
                                         }
-
                                         echo "</td>";
-
                                         // Acciones
                                         echo "<td><input id='" . $user['id'] . "' class='boton-tabla btn btn-primary' onClick='editUser(this.id)' value='Edit'></td>";
                                         echo "<td><input id='" . $user['id'] . "' class='boton-tabla btn btn-danger' onClick='eraseUser(this.id)' value='Erase'></td>";
                                         echo "</tr>";
                                     }
-
                                     ?>
-
                                 </tbody>
                             </table>
                         </div>
@@ -754,8 +739,6 @@
 
 
         function eraseTrip(idTrip) {
-
-
             $("#erase_trip").modal();
             document.getElementById("tripid_erase_trip").setAttribute("value", idTrip);
         }
